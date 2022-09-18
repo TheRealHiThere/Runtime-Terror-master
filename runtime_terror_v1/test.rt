@@ -23,6 +23,6 @@ fn exif[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
     }else{
         log.info("No name was found!")
     }
-}
+}1
 
 <-'rt . --compiler args --args 0 0 0 0 8080 "Hello World"'->
