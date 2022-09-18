@@ -1,0 +1,50 @@
+import std;
+namespace.use(std);
+
+<-'If there is an _ before the 
+    variable name the variable is not being used 
+    u8 stands for the integer. _args is ablank 
+    place holder
+'->
+
+const(log)=Log(None);
+
+
+fn main[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
+    const(username)=String("Hello User");
+    log.info(username);
+    return(0);
+}
+
+fn exif[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
+    const(name)=String("Hello There");
+    if(){
+        log.info(name);
+    }else{
+        log.info("No name was found!");
+    }
+}
+
+fn forLoopRef[pub](_args:*(T)[]):u8{
+    for(i=1;i<5;i++){
+        log.info("FOR LOOP!");
+    }
+}
+
+fn foreachLoopRef[pub](_args:*(T)[]):u8{
+    foreach(String greet in greet){
+        if (great.length < 3){
+            return great;
+        }
+    }
+    break:
+}
+
+fn whileLoopRef[pub](_args:*(T)[]):u8{
+    while (True) {
+        log.info("WHILE LOOP!");
+        break:
+    }
+}
+
+<-'rt . --compiler args --args 0 0 0 0 8080 "Hello World"'->

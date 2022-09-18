@@ -1,0 +1,28 @@
+import std;
+namespace.use(std);
+
+<-'If there is an _ before the 
+    variable name the variable is not being used 
+    u8 stands for the interager. _args is ablank 
+    place holder
+'->
+
+const(log)=Log(None);
+
+
+fn main[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
+    var(username)=String("Hello User");
+    log.info(username);
+    return(0);
+}
+
+fn exif[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
+    var(name)=String("Hello There")
+    if(){
+        log.info(name)
+    }else{
+        log.info("No name was found!")
+    }
+}
+
+<-'rt . --compiler args --args 0 0 0 0 8080 "Hello World"'->
