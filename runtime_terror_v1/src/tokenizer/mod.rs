@@ -259,5 +259,6 @@ pub fn tokenize(data: String) -> Vec<Token> {
             res.push(Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_1))
         }
     }
+
     res
 }
