@@ -1,11 +1,10 @@
-import std;
-namespace.use(std);
+import(std).use();
 
-<-'If there is an _ before the 
+<'If there is an _ before the 
     variable name the variable is not being used 
     u8 stands for the interager. _args is ablank 
     place holder
-'->
+'>
 
 const(log)=Log(None);
 
@@ -25,4 +24,4 @@ fn exif[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
     }
 }
 
-<-'rt . --compiler args --args 0 0 0 0 8080 "Hello World"'->
+<'rt . --compiler args --args 0 0 0 0 8080 "Hello World"'>

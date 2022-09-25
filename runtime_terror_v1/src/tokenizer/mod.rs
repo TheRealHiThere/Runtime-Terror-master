@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(unused)]
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum TEXT_TOKEN {
     TEXT_FUNCTION_DECLARATION_1,
     TEXT_FUNCTION_DECLARATION_2,
@@ -151,7 +151,7 @@ impl Into<char> for TEXT_TOKEN {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum SIGN_TOKEN {
     SIGN_BRACKET_CURLY_OPEN,
     SIGN_BRACKET_CURLY_CLOSE,
@@ -198,7 +198,7 @@ impl Into<char> for SIGN_TOKEN {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum Token {
     Text(TEXT_TOKEN),
     Sign(SIGN_TOKEN),
@@ -217,48 +217,93 @@ impl Into<char> for Token {
 }
 
 pub fn tokenize(data: String) -> Vec<Token> {
+    let mut is_comment: bool = false;
     let mut res: Vec<Token> = Vec::new();
     for chr in data.chars() {
-        if chr == '{' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_CURLY_OPEN))
-        } else if chr == '}' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_CURLY_CLOSE))
-        } else if chr == '(' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_ROUND_OPEN))
-        } else if chr == ')' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_ROUND_CLOSE))
-        } else if chr == '[' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_SQUARE_OPEN))
-        } else if chr == ']' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_SQUARE_CLOSE))
-        } else if chr == '<' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_LESS_THAN))
-        } else if chr == '>' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_GREATER_THAN))
-        } else if chr == '.' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_POINT))
-        } else if chr == ':' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_COLON))
-        } else if chr == ',' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_COMMA))
-        } else if chr == ';' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_SEMICOLON))
-        } else if chr == '$' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_DOLLAR))
-        } else if chr == '&' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_REFERENCE))
-        } else if chr == '*' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_DEREFERENCE))
-        } else if chr == '"' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_QUOTATION))
-        } else if chr == '\'' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION))
+        if chr == '{' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_CURLY_OPEN));
+        } else if chr == '}' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_CURLY_CLOSE));
+        } else if chr == '(' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_ROUND_OPEN));
+        } else if chr == ')' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_ROUND_CLOSE));
+        } else if chr == '[' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_SQUARE_OPEN));
+        } else if chr == ']' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_BRACKET_SQUARE_CLOSE));
+        } else if chr == '.' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_POINT));
+        } else if chr == ':' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_COLON));
+        } else if chr == ',' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_COMMA));
+        } else if chr == ';' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_SEMICOLON));
+        } else if chr == '$' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_DOLLAR));
+        } else if chr == '&' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_REFERENCE));
+        } else if chr == '*' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_DEREFERENCE));
+        } else if chr == '"' && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_QUOTATION));
         } else if chr == '@' {
-            res.push(Token::Sign(SIGN_TOKEN::SIGN_AT))
-        } else if chr == 'v' && res.last().unwrap() == &Token::NL {
-            res.push(Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_1))
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_AT));
+        }
+
+        //VAR
+        else if chr == 'v' && res.last().unwrap() == &Token::NL && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_1));
+        } else if chr == 'a' && res.last().unwrap() == &Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_1) && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_2));
+        } else if chr == 'r' && res.last().unwrap() == &Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_2) && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_VAR_DECLARATION_3));
+        }
+        
+        //FN 
+        else if chr == 'f' && res.last().unwrap() == &Token::NL && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_FUNCTION_DECLARATION_1));
+        } else if chr == 'n' && res.last().unwrap() == &Token::Text(TEXT_TOKEN::TEXT_FUNCTION_DECLARATION_1) && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_FUNCTION_DECLARATION_2));
+        }
+
+        //CL
+        else if chr == 'c' && res.last().unwrap() == &Token::NL && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_CLASS_DECLARATION_1));
+        } else if chr == 'l' && res.last().unwrap() == &Token::Text(TEXT_TOKEN::TEXT_CLASS_DECLARATION_1) && !is_comment {
+            res.push(Token::Text(TEXT_TOKEN::TEXT_CLASS_DECLARATION_2));
+        }
+
+        //Comments
+        else if chr == '<' && res.last().unwrap() == &Token::NL && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_LESS_THAN));
+        } else if chr == '\'' && res.last().unwrap() == &Token::Sign(SIGN_TOKEN::SIGN_LESS_THAN) && !is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION));
+            is_comment=true;
+        } else if chr == '\'' && is_comment {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION));
+        } else if chr == '>' && res.last().unwrap() == &Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION) {
+            res.push(Token::Sign(SIGN_TOKEN::SIGN_GREATER_THAN));
+            is_comment=false;
+        }
+
+        else {
+            res.push(Token::NL)
+        }
+    };
+    res.retain(|x|(x)!=&Token::NL);
+    let mut output: Vec<Token> = Vec::new();
+    for i in 0..res.len() {
+        if res[i] == Token::Sign(SIGN_TOKEN::SIGN_LESS_THAN) && res[i+1] == Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION) {
+
+        } else if res[i] == Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION) && res[i-1] == Token::Sign(SIGN_TOKEN::SIGN_LESS_THAN) {
+
+        } else if res[i] == Token::Sign(SIGN_TOKEN::SIGN_SQUOTATION) && res[i+1] == Token::Sign(SIGN_TOKEN::SIGN_GREATER_THAN) {
+
+        } else {
+            output.push(res[i]);
         }
     }
-
-    res
+    return output;
 }

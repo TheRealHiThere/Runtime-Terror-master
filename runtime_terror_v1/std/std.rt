@@ -1,7 +1,9 @@
-<-- # Every thing is private by default. -->
-<-- # The only way to make something public is to use the [pub] keyword. -->
-<-- # ... is an array. -->
-import mem;
+<'
+The only way to make something public is to use the [pub] keyword.
+Every thing is private by default.
+... is an array.
+'>
+import(mem);
 
 enum Opt<T> {
     Some(T),
@@ -23,8 +25,10 @@ enum LogLevel {
 }
 
 
-<--# Vec will be a built in class. -->
-<--# : is a type, T is a type. -->
+<'
+Vec will be a built in class.
+: is a type, T is a type.
+'>
 cl Vec[pub]<T>{
     constr(i1:T){
         
@@ -34,8 +38,8 @@ cl Vec[pub]<T>{
 
     }
 
-    <--# & is the reference. -->
-    <--# * is the dereference. -->
+    <' & is the reference.' >
+    <' * is the dereference. '>
     fn unsafe_append[pub,unsafe](&self,data:T){
         unsafe {
             u8  -> 8  bits no sign (+)
@@ -81,12 +85,12 @@ cl Log[pub]{
         res.append(m);
         res.append("\n");
         return(res);
-        <-
+        <'
             11:07.9.18.2022 [C:/Code/file.rt:17] (Info) Some Log Message
-        ->
+        '>
     }
 
-    <--# todo: Define 'File'. -->
+    <' todo: Define File .'>
     fn log(m:String,time:String,file:File,level:LogLevel){
         process.stdout.write(Log.format(m,time,file,level)).flush();
     }
@@ -122,7 +126,7 @@ cl Log[pub]{
     }
 }
 
-<--# Switch will be a built in function. -->
-<--# '$' is an implements. -->
+<' Switch will be a built in function.'>
+<' $ is an implements.'>
 fn switch[pub]<T$Eq>(_:T){}
 

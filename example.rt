@@ -1,10 +1,10 @@
-import std;
-namespace.use(std);
+import(std).use();
 
-<-'If there is an _ before the 
-    variable name the variable is not being used 
-    u8 stands for the integer. _args is ablank 
-    place holder
+<-'
+If there is an _ before the 
+variable name the variable is not being used 
+u8 stands for the integer. _args is a blank 
+place holder
 '->
 
 const(log)=Log(None);
@@ -16,34 +16,31 @@ fn main[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
     return(0);
 }
 
-fn exif[pub]<T$Eq+?ToString>(_args:*(T)[]):u8{
+fn example_if[pub]<T>(_args:*(T)[]):u8{
     const(name)=String("Hello There");
-    if(){
+    if(name){
         log.info(name);
     }else{
         log.info("No name was found!");
     }
 }
 
-fn forLoopRef[pub](_args:*(T)[]):u8{
-    for(i=1;i<5;i++){
-        log.info("FOR LOOP!");
+fn example_forloop[pub]<T>(array:*(T)[]):u8{
+    for(i=1;i<array.length;i++){
+        log.info("FOR LOOP:",array[i]);
     }
 }
 
-fn foreachLoopRef[pub](_args:*(T)[]):u8{
-    foreach(String greet in greet){
-        if (great.length < 3){
-            return great;
-        }
+fn example_foreach[pub]<T>(array:*(T)[]):u8{
+    for(i:*(String);i=array.iter()){
+        log.info("FOREACH LOOP:",i);
     }
-    break:
 }
 
-fn whileLoopRef[pub](_args:*(T)[]):u8{
-    while (True) {
+fn example_while[pub](_args:*(T)[]):u8{
+    while(true) {
         log.info("WHILE LOOP!");
-        break:
+        break;
     }
 }
 
