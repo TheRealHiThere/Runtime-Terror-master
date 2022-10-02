@@ -1,0 +1,132 @@
+<'
+The only way to make something public is to use the [pub] keyword.
+Every thing is private by default.
+... is an array.
+'>
+import(mem);
+
+enum Opt<T> {
+    Some(T),
+    None
+}
+
+enum Res<O,E> {
+    Ok(O),
+    Err(E)
+}
+
+@derive(Eq,Stringify)
+enum LogLevel {
+    Error = 0,
+    Warn = 1,
+    Info = 2,
+    Debug = 3,
+    Trace = 4,
+}
+
+
+<'
+Vec will be a built in class.
+: is a type, T is a type.
+'>
+cl Vec[pub]<T>{
+    constr(i1:T){
+        
+    }
+
+    fn append[pub](&mut self,data:T){
+
+    }
+
+    <' & is the reference.' >
+    <' * is the dereference. '>
+    fn unsafe_append[pub,unsafe](&self,data:T){
+        unsafe {
+            u8  -> 8  bits no sign (+)
+            u16 -> 16 bits no sign (+)
+            u32 -> 32 bits no sign (+)
+            u64 -> 64 bits no sign (+)
+            i8  -> 8  bits +- sign
+            i16 -> 16 bits +- sign
+            i32 -> 32 bits +- sign
+            i64 -> 64 bits +- sign
+            <--# addr is now an i32. -->
+            var[mut,i32](addr) = (&self).__proto.get_adress();
+            mem.memory.write_unchecked(addr,data);
+        }
+    }
+}
+
+
+
+
+cl Log[pub]{
+    lvl:LogLevel;
+    constr(level:Opt<LogLevel>){
+        switch(level){
+            Some(v)=>{
+                self.lvl=v
+            },
+            None=>{
+                self.lvl=LogLevel.Info
+            }
+        }
+    }
+
+    <--# Format. -->
+    fn format(m:String,time:String,file:File,level:LogLevel):String{
+        var[mut,static](res)=String.default();
+        res.append(time);
+        res.append(" [");
+        res.append(file.to_String());
+        res.append("] (");
+        res.append(level.to_String());
+        res.append(") ");
+        res.append(m);
+        res.append("\n");
+        return(res);
+        <'
+            11:07.9.18.2022 [C:/Code/file.rt:17] (Info) Some Log Message
+        '>
+    }
+
+    <' todo: Define File .'>
+    fn log(m:String,time:String,file:File,level:LogLevel){
+        process.stdout.write(Log.format(m,time,file,level)).flush();
+    }
+
+    fn error[pub]<T$ToString>(&self,...data:T){
+        unsafe {
+            Log.log(data.join(' '),Date.now(),__proto.get_unsafe_data("caller"),LogLevel.Error);
+        }
+    }
+
+    fn warn[pub]<T$ToString>(&self,...data:T){
+        unsafe {
+            Log.log(data.join(' '),Date.now(),__proto.get_unsafe_data("caller"),LogLevel.Warn);
+        }
+    }
+
+    fn info[pub]<T$ToString>(&self,...data:T){
+        unsafe {
+            Log.log(data.join(' '),Date.now(),__proto.get_unsafe_data("caller"),LogLevel.Info);
+        }
+    }
+
+    fn dubug[pub]<T$ToString>(&self,...data:T){
+        unsafe {
+            Log.log(data.join(' '),Date.now(),__proto.get_unsafe_data("caller"),LogLevel.Debug);
+        }
+    }
+
+    fn trace[pub]<T$ToString>(&self,...data:T){
+        unsafe {
+            Log.log(data.join(' '),Date.now(),__proto.get_unsafe_data("caller"),LogLevel.Trace);
+        }
+    }
+}
+
+<' Switch will be a built in function.'>
+<' $ is an implements.'>
+fn switch[pub]<T$Eq>(_:T){}
+

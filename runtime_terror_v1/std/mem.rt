@@ -1,0 +1,18 @@
+<-- # Every thing is private by default -->
+
+
+var[pub](memory) = cl()
+
+cl mem(){
+    fn write_unchecked[pub,unsafe]<T>(addr:i32,data:T){
+        unsafe {
+            process.memory.get(addr).write(data);
+        }
+    }
+
+    fn read_unchecked[pub,unsafe]<T>(addr:i32):T{
+        unsafe {
+            return(process.memory.get(addr).read());
+        }
+    }
+}
