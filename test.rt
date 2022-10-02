@@ -17,8 +17,8 @@ cl myclass[pub]{
 };
 
 fn main[](){
-    'const cl = myclass.new("test");
-    cl.example_method();'
+    const new = myclass.new("test");
+    new.example_method();
 };
 
 'If there is an _ before the 

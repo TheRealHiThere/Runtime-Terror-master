@@ -56,7 +56,7 @@ pub fn tokenize(data: String) -> Vec<Token> {
             res.push(Token::Sign(SIGN_TOKEN::SIGN_REFERENCE));
         } else if chr == '*' && !is_comment && !is_args {
             res.push(Token::Sign(SIGN_TOKEN::SIGN_DEREFERENCE));
-        } else if chr == '"' && !is_comment && !is_args {
+        } else if chr == '"' && !is_comment {
             res.push(Token::Sign(SIGN_TOKEN::SIGN_QUOTATION));
         } else if chr == '@' && !is_comment && !is_args {
             res.push(Token::Sign(SIGN_TOKEN::SIGN_AT));
