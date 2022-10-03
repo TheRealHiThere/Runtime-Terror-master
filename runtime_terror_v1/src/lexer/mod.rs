@@ -28,29 +28,15 @@ pub(crate) fn lex(tokes: Vec<Token>) -> Vec<Lexed> {
         match token {
             Token::Sign(SIGN_TOKEN::SIGN_SEMICOLON) => {
                 match currently_constructing {
-                    // Lexes::Function => {
-                    //     // let function = Function::new(currently_data.clone(), vec![], vec![]);
-                    //     // lexes.push(Lexed::Function(function));
-                    //     // currently_data = String::new();
-                    //     // currently_constructing = Lexes::Void;
-                    // },
                     Lexes::Method => {
                         currently_constructing = Lexes::Void;
-                        // let method = Function::new(currently_data.clone(), vec![], vec![]);
-                        // lexes.push(Lexed::Function(method));
-                        // currently_data = String::new();
                     },
-                    // Lexes::Class => {
-                    //     let class = Class::new(&currently_data);
-                    //     lexes.push(Lexed::Class(class));
-                    //     currently_data = String::new();
-                    // },
-                    // Lexes::Void => {}
                     _ => {
                         currently_constructing = Lexes::Void;
                     }
                 }
             },
+
             Token::Text(TEXT_TOKEN::TEXT_DEC(v)) => {
                 currently_data.push(v)
             },

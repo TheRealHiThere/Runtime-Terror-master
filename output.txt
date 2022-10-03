@@ -532,6 +532,13 @@
     ),
     Function(
         Function {
+            name: "",
+            args: [],
+            body: [],
+        },
+    ),
+    Function(
+        Function {
             name: "main",
             args: [],
             body: [],
